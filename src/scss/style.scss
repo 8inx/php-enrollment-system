@@ -1,0 +1,219 @@
+/** Defaults */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: "";
+}
+
+/** custom */
+
+select:required:invalid {
+  @apply text-slate-400;
+}
+
+option[value=""][disabled] {
+  @apply hidden;
+}
+
+option {
+  @apply text-gray-700;
+}
+
+/** datatables */
+.dataTables_wrapper {
+  @apply flex flex-wrap;
+}
+
+.dataTables_length {
+  @apply w-1/2 h-14 flex items-center text-slate-400;
+  label {
+    @apply flex items-center;
+    select {
+      @apply mx-2 px-3 py-2 bg-white border border-slate-300 rounded-md 
+            text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 
+            focus:ring-1 focus:ring-sky-500;
+    }
+  }
+}
+
+.dataTables_filter {
+  @apply flex-1 h-14 flex items-center text-slate-400;
+  label {
+    @apply flex items-center ml-auto;
+    input {
+      @apply w-full mx-2 px-3 py-2 bg-white border border-slate-300 rounded-md 
+            text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 
+            focus:ring-1 focus:ring-sky-500;
+    }
+  }
+}
+
+.dataTable {
+  @apply w-full table-auto mb-5;
+
+  thead {
+    @apply text-slate-600 z-0;
+  }
+
+  th {
+    @apply relative min-w-[80px] px-1 py-5 text-sm text-left whitespace-nowrap;
+  }
+
+  td {
+    @apply px-1 py-3 font-light text-sm text-slate-600 overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .sorting::before,
+  .sorting::after {
+    font-family: "Font Awesome 6 Free";
+    @apply absolute right-2 text-sm text-gray-300;
+  }
+
+  .sorting::before {
+    content: "\f0de";
+  }
+
+  .sorting::after {
+    content: "\f0dd";
+  }
+
+  .sorting.sorting_asc::before,
+  .sorting.sorting_desc::after {
+    @apply text-sky-500;
+  }
+}
+
+.dataTables_info {
+  @apply w-1/2 my-2 mr-auto text-sm text-slate-400;
+}
+
+.dataTables_paginate {
+  @apply text-slate-500 border border-slate-200 rounded-md;
+}
+
+tr[id="No matching records found"] {
+  td {
+    @apply block #{!important};
+  }
+}
+
+.paginate_button {
+  @apply inline-flex items-center h-full px-3 py-1 border-r border-slate-200;
+
+  &.current {
+    @apply bg-yellow-500 text-white;
+  }
+
+  &.disabled {
+    @apply text-slate-400;
+  }
+}
+
+/** tabledit */
+.tabledit-toolbar {
+  @apply flex gap-1;
+
+  .btn-group {
+    @apply flex;
+  }
+}
+
+.tabledit-span {
+  a {
+    @apply underline text-blue-600;
+  }
+}
+
+.tabledit-input {
+  @apply w-full px-3 py-1 bg-white border border-slate-300 
+        text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 
+        focus:ring-1 focus:ring-sky-500;
+}
+
+.tabledit-edit-mode.close-input .form-control,
+.tabledit-view-mode.close-input .form-control {
+  @apply hidden #{!important};
+}
+
+.tabledit-view-mode div[data-checkbox] {
+  @apply hidden;
+}
+
+.tabledit-edit-mode div[data-checkbox] {
+  @apply relative w-auto flex flex-col bg-white -mt-3;
+  .cb-wrapper {
+    @apply absolute left-0 right-0 -mt-1;
+  }
+  .cb-col {
+    @apply left-0 right-0 text-ellipsis overflow-hidden;
+  }
+}
+
+td.capsule-warning span.tabledit-span {
+  @apply px-2 py-1 text-white text-xs rounded-full bg-amber-400;
+}
+
+td.capsule-success span.tabledit-span {
+  @apply px-2 py-1 text-white text-xs rounded-full bg-green-400;
+}
+
+td.capsule-hot span.tabledit-span {
+  @apply px-2 py-1 text-white text-xs rounded-full bg-pink-400;
+}
+
+td.capsule-accent span.tabledit-span {
+  @apply px-2 py-1 text-white text-xs rounded-full bg-sky-400;
+}
+
+/** validations */
+label.error {
+  @apply text-red-500 text-xs leading-3;
+}
+
+span.error {
+  @apply text-red-500 text-sm leading-3;
+}
+
+span.success {
+  @apply text-green-500 text-sm leading-3;
+}
+
+.field-error {
+  @apply bg-red-50 border-2 border-red-300 focus:ring-red-500 #{!important};
+}
+
+/** nprogress */
+#nprogress .bar {
+  @apply h-1 bg-fuchsia-500 #{!important};
+}
+
+/** custom modal */
+.jquery-modal {
+  @apply bg-slate-900/70 z-50;
+}
+
+.modal {
+  @apply max-w-max;
+}
+
+/** custom */
+.capsule {
+  @apply px-2 py-1 text-white text-xs rounded-full;
+}
+
+.enroll-status[title="ongoing"] .enroll-status-completed {
+  @apply hidden;
+}
+
+.enroll-status[title="completed"] .enroll-status-ongoing {
+  @apply hidden;
+}
