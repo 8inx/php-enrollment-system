@@ -1,4 +1,17 @@
 /** Defaults */
+@font-face {
+  font-family: "Inter";
+  src: url(../fonts/Inter-Bold.ttf);
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url(../fonts/Inter-Regular.ttf);
+  font-weight: 400;
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

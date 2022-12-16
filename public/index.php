@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['accountname'])) {
+    header('Location: ./login.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,8 +14,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <!-- fonts -->
-    <link rel="stylesheet" href="../vendor/googleFonts/fonts.css">
     <!-- icons -->
     <link rel="stylesheet" href="../vendor/fontawesome/css/all.css">
     <!-- plugin css -->
@@ -53,10 +59,10 @@
                 <i class="fa-solid fa-user"></i>
                 <span class="tracking-wider ml-4 text-sm">Students</span>
             </a>
-            <a class="w-full mt-auto px-6 py-3 flex items-center border-t border-white border-opacity-40 text-white cursor-pointer">
+            <button id="logout" class="w-full mt-auto px-6 py-3 flex items-center border-t border-white border-opacity-40 text-white cursor-pointer">
                 <i class="fa-solid fa-right-from-bracket fa-rotate-180"></i>
                 <span class="tracking-wider ml-4 text-sm">Logout</span>
-            </a>
+            </button>
         </aside>
         <!-- end of sidebar -->
 
@@ -65,12 +71,12 @@
             <!-- topbar -->
             <header class="sticky top-0 w-full h-16 bg-white drop-shadow-md z-10">
                 <div class="flex items-center h-full px-6">
-                    <a href="./" class="ml-auto text-gray-500 hover:text-slate-800">
+                    <a href="#" class="ml-auto text-gray-500 hover:text-slate-800">
                         <i class="fa-regular fa-bell fa-lg"></i>
                     </a>
-                    <a href="./account.php" class="ml-6 pl-6 flex items-center text-blue-500 hover:text-sky-500 border-l border-gray-300">
+                    <a href="#" class="ml-6 pl-6 flex items-center text-blue-500 hover:text-sky-500 border-l border-gray-300">
                         <img src="../dist/img/profile.svg" class="w-8 h-8 rounded-full" alt="">
-                        <span class="ml-2 font-bold text-sm">superking</span>
+                        <span class="ml-2 font-bold text-sm"><?= $_SESSION['accountname'] ?></span>
                     </a>
                 </div>
             </header>
@@ -184,16 +190,6 @@
     <!-- inline scripts -->
     <script>
         $(document).ready(function() {
-            // course pie chart initializer
-            $.when(getCoursesStats()).done(function(res) {
-                var data = []
-                var labels = []
-                $.each(res.data, function(i, val) {
-                    data.push(val.studentCount)
-                    labels.push(val.code)
-                })
-                createCoursePieChart(labels, data, getColorSet(data.length))
-            })
 
             // enrollment line chart  initializer
             $.when(getEnrollmentStats()).done(function(res) {
@@ -204,6 +200,17 @@
                     labels.push(val.year)
                 })
                 createEnrollmentsLineChart(labels, data)
+            })
+
+            // course pie chart initializer
+            $.when(getCoursesStats()).done(function(res) {
+                var data = []
+                var labels = []
+                $.each(res.data, function(i, val) {
+                    data.push(val.studentCount)
+                    labels.push(val.code)
+                })
+                createCoursePieChart(labels, data, getColorSet(data.length, 'cold'))
             })
 
             // initialize numbers
@@ -318,7 +325,12 @@
                     },
                     options: {
                         legend: {
-                            display: false
+                            display: true,
+                            labels: {
+                                fontSize: 10,
+                                boxWidth: 100,
+                                usePointStyle: true,
+                            }
                         },
                         maintainAspectRatio: false,
                         responsive: true,
@@ -392,6 +404,28 @@
                 });
             }
 
+            $('#logout').click(function() {
+                console.log('dsaddsa');
+                $.ajax({
+                    type: "POST",
+                    url: "../api/auth.php",
+                    data: '&action=logout',
+                    beforeSend: function(data) {
+                        NProgress.start();
+                    },
+                    success: function(data) {
+                        NProgress.done()
+                        window.location.href = "./login.php"
+                    },
+                    error: function(xhr, status, error) {
+                        NProgress.done()
+                        if (xhr.status >= 400) {
+                            var err = xhr.responseJSON;
+                            alert(error)
+                        }
+                    },
+                });
+            })
         })
     </script>
 </body>

@@ -1,3 +1,5 @@
+USE `:database`;
+
 CREATE TABLE `courses`(
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `code` VARCHAR(50) NOT NULL UNIQUE,
@@ -23,7 +25,7 @@ CREATE TABLE `students` (
     `firstName` VARCHAR(100) NOT NULL,
     `lastName` VARCHAR(100) NOT NULL,
     `email` VARCHAR(50) NOT NULL UNIQUE,
-    `gender` VARCHAR(10),
+    `gender` VARCHAR(15),
     `courseId` INT,
     `dateCreated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     

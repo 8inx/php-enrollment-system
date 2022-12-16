@@ -6,7 +6,6 @@ const imagemin = require("gulp-imagemin");
 const merge = require("merge-stream");
 const concat = require("gulp-concat");
 const del = require("del");
-const googleWebFonts = require("gulp-google-webfonts");
 
 // css task
 function cssTask() {
@@ -26,12 +25,15 @@ function imageTask() {
   return src(["src/img/*"]).pipe(imagemin()).pipe(dest("dist/img"));
 }
 
+// fonts task
+function fontsTask() {
+  return src(["src/fonts/*"]).pipe(imagemin()).pipe(dest("dist/fonts"));
+}
+
+
+
 // vendor Tasks
 function modules() {
-  // google-fonts
-  const webfonts = src("./font.list")
-    .pipe(googleWebFonts())
-    .pipe(dest("vendor/googleFonts"));
 
   // fontawesome
   const fontawesome = src(["./node_modules/@fortawesome/**/*.scss"])
@@ -73,7 +75,7 @@ function modules() {
 
   const chartJs = src("./node_modules/chart.js/dist/*.js").pipe(
     dest("./vendor/chart.js")
-  );
+  )
 
   //nprogress
   const nprogress = src([
@@ -82,7 +84,6 @@ function modules() {
   ]).pipe(dest("vendor/nprogress"));
 
   return merge(
-    webfonts,
     fontawesome,
     fontawesomeIcon,
     jquery,
@@ -100,7 +101,6 @@ function browserSyncServe(cb) {
   browserSync.init({
     proxy: "127.0.0.1/enrollv2",
     port: 8080,
-    open: false,
     notify: false,
   });
   cb();
@@ -131,11 +131,11 @@ function cleanVendor() {
   return del(["./vendor/"]);
 }
 
-const build = series(cssTask, jsTask, imageTask, modules);
+const build = series(cssTask, jsTask, imageTask, fontsTask, modules);
 const dev = series(build, browserSyncServe, watchTask);
 
 const vendor = series(cleanVendor, modules);
-const dist = series(cleanDist, cssTask, jsTask, imageTask);
+const dist = series(cleanDist, cssTask, jsTask, fontsTask, imageTask);
 
 exports.default = build;
 exports.watch = dev;

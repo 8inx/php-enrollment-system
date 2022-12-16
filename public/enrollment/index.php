@@ -1,3 +1,11 @@
+<?php 
+    session_start();
+
+    if(!isset($_SESSION['accountname'])) {
+        header('Location: ./login.php');
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,8 +14,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enrollment/Profile</title>
-    <!-- fonts -->
-    <link rel="stylesheet" href="../../vendor/googleFonts/fonts.css">
     <!-- icons -->
     <link rel="stylesheet" href="../../vendor/fontawesome/css/all.css">
     <!-- plugin css -->
@@ -53,10 +59,10 @@
                 <i class="fa-solid fa-user"></i>
                 <span class="tracking-wider ml-4 text-sm">Students</span>
             </a>
-            <a class="w-full mt-auto px-6 py-3 flex items-center border-t border-white border-opacity-40 text-white cursor-pointer">
+            <button id="logout" class="w-full mt-auto px-6 py-3 flex items-center border-t border-white border-opacity-40 text-white cursor-pointer">
                 <i class="fa-solid fa-right-from-bracket fa-rotate-180"></i>
                 <span class="tracking-wider ml-4 text-sm">Logout</span>
-            </a>
+            </button>
         </aside>
         <!-- end of sidebar -->
 
@@ -76,12 +82,12 @@
                             <span>Subjects</span>
                         </a>
                     </div>
-                    <a href="./" class="ml-auto text-gray-500 hover:text-slate-800">
+                    <a href="#" class="ml-auto text-gray-500 hover:text-slate-800">
                         <i class="fa-regular fa-bell fa-lg"></i>
                     </a>
-                    <a href="./account.php" class="ml-6 pl-6 flex items-center text-blue-500 hover:text-sky-500 border-l border-gray-300">
+                    <a href="#" class="ml-6 pl-6 flex items-center text-blue-500 hover:text-sky-500 border-l border-gray-300">
                         <img src="../../dist/img/profile.svg" class="w-8 h-8 rounded-full" alt="">
-                        <span class="ml-2 font-bold text-sm">superking</span>
+                        <span class="ml-2 font-bold text-sm"><?=$_SESSION['accountname']?></span>
                     </a>
                 </div>
             </header>
@@ -376,9 +382,13 @@
                         },
                         {
                             data: "timeIn",
+                            editable: true,
+                            type: "time"
                         },
                         {
                             data: "timeOut",
+                            editable: true,
+                            type: "time"
                         },
                         {
                             data: "room",
@@ -579,6 +589,29 @@
                     },
                 });
             }
+
+            $('#logout').click(function() {
+                console.log('dsaddsa');
+                $.ajax({
+                    type: "POST",
+                    url: "../api/auth.php",
+                    data: '&action=logout',
+                    beforeSend: function(data) {
+                        NProgress.start();
+                    },
+                    success: function(data) {
+                        NProgress.done()
+                        window.location.href = "./login.php"
+                    },
+                    error: function(xhr, status, error) {
+                        NProgress.done()
+                        if (xhr.status >= 400) {
+                            var err = xhr.responseJSON;
+                            alert(error)
+                        }
+                    },
+                });
+            })
         })
     </script>
 </body>
